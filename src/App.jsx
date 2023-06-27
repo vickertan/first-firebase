@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { Auth } from "./components/Auth";
 import { db } from "./config/firebase";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, addDoc } from "firebase/firestore";
 
 const App = () => {
     const [movieList, setMovieList] = useState([]);
+
+    const [movieTitle, setMovieTitle] = useState("");
+    const [newReleaseDate, setNewReleaseDate] = useState(0);
+    const [isNewOscar, setIsNewOscar] = useState(false);
+
     const movieColl = collection(db, "movies");
 
     useEffect(() => {
@@ -29,11 +34,23 @@ const App = () => {
             <Auth />
 
             <div>
-                <input type="text" placeholder="Movie title..." />
-                <input type="number" placeholder="Release date..." />
-                <input id="oscarCheck" type="checkbox" />
+                <input
+                    type="text"
+                    placeholder="Movie title..."
+                    onChange={(e) => setMovieTitle(e.target.value)}
+                />
+                <input
+                    type="number"
+                    placeholder="Release date..."
+                    onChange={(e) => setNewReleaseDate(Number(e.target.value))}
+                />
+                <input
+                    id="oscarCheck"
+                    type="checkbox"
+                    onChange={(e) => setIsNewOscar(e.target.checked)}
+                />
                 <label htmlFor="oscarCheck">Received an Oscar</label>
-                <input type="submit" />
+                <input type="submit" onClick={submitNewMovie} />
             </div>
             <div>
                 {movieList.map((movie) => (
