@@ -6,9 +6,9 @@ import { getDocs, collection, addDoc } from "firebase/firestore";
 const App = () => {
     const [movieList, setMovieList] = useState([]);
 
-    const [movieTitle, setMovieTitle] = useState("");
+    const [newMovieTitle, setNewMovieTitle] = useState("");
     const [newReleaseDate, setNewReleaseDate] = useState(0);
-    const [isNewOscar, setIsNewOscar] = useState(false);
+    const [newMovieOscar, setNewMovieOscar] = useState(false);
 
     const movieColl = collection(db, "movies");
 
@@ -27,7 +27,19 @@ const App = () => {
         };
 
         getMovieList();
-    }, []);
+    }, [movieColl]);
+
+    const submitNewMovie = async () => {
+        try {
+            await addDoc(movieColl, {
+                title: newMovieTitle,
+                releaseDate: newReleaseDate,
+                receivedAnOscar: newMovieOscar,
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div>
@@ -37,7 +49,7 @@ const App = () => {
                 <input
                     type="text"
                     placeholder="Movie title..."
-                    onChange={(e) => setMovieTitle(e.target.value)}
+                    onChange={(e) => setNewMovieTitle(e.target.value)}
                 />
                 <input
                     type="number"
@@ -45,11 +57,11 @@ const App = () => {
                     onChange={(e) => setNewReleaseDate(Number(e.target.value))}
                 />
                 <input
-                    id="oscarCheck"
+                    id="oscar"
                     type="checkbox"
-                    onChange={(e) => setIsNewOscar(e.target.checked)}
+                    onChange={(e) => setNewMovieOscar(e.target.checked)}
                 />
-                <label htmlFor="oscarCheck">Received an Oscar</label>
+                <label htmlFor="oscar">Received an Oscar</label>
                 <input type="submit" onClick={submitNewMovie} />
             </div>
             <div>
