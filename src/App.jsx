@@ -1,13 +1,8 @@
 import { useEffect, useState } from "react";
 import { Auth } from "./components/Auth";
+import { Movie } from "./components/Movie";
 import { db } from "./config/firebase";
-import {
-    getDocs,
-    collection,
-    addDoc,
-    deleteDoc,
-    doc,
-} from "firebase/firestore";
+import { getDocs, collection, addDoc } from "firebase/firestore";
 
 const App = () => {
     const [movieList, setMovieList] = useState([]);
@@ -47,15 +42,6 @@ const App = () => {
         }
     };
 
-    const deleteMovie = async (id) => {
-        try {
-            const movieDoc = doc(db, "movies", id);
-            await deleteDoc(movieDoc);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
     return (
         <div>
             <Auth />
@@ -81,20 +67,14 @@ const App = () => {
             </div>
             <div>
                 {movieList.map((movie) => (
-                    <div key={movie.id}>
-                        <h1
-                            style={{
-                                color: movie.receivedAnOscar ? "gold" : "black",
-                            }}
-                        >
-                            {movie.title}
-                        </h1>
-                        <p>Date: {movie.releaseDate}</p>
-                        <button onClick={() => deleteMovie(movie.id)}>
-                            Delete
-                        </button>
-                        <input type="text" placeholder="edit title..." />
-                    </div>
+                    <Movie
+                        db={db}
+                        key={movie.id}
+                        id={movie.id}
+                        title={movie.title}
+                        receivedAnOscar={movie.receivedAnOscar}
+                        releaseDate={movie.releaseDate}
+                    />
                 ))}
             </div>
         </div>
