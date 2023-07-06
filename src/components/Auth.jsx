@@ -14,6 +14,7 @@ export const Auth = () => {
     const createAccount = async () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
+            console.log("account created");
         } catch (err) {
             console.error(err);
         }
@@ -22,6 +23,7 @@ export const Auth = () => {
     const logIn = async () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
+            console.log("logged in");
         } catch (err) {
             console.error(err);
         }
@@ -30,6 +32,7 @@ export const Auth = () => {
     const signInWithGoogle = async () => {
         try {
             await signInWithPopup(auth, googleProvider);
+            console.log("logged in with Google");
         } catch (err) {
             console.error(err);
         }
@@ -38,6 +41,7 @@ export const Auth = () => {
     const logOut = async () => {
         try {
             await signOut(auth);
+            console.log("logged out");
         } catch (err) {
             console.error(err);
         }
