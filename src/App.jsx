@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { Auth } from "./components/Auth";
+import { MovieForm } from "./components/MovieForm";
 import { Movie } from "./components/Movie";
-import { db } from "./config/firebase";
-import { getDocs, collection, addDoc } from "firebase/firestore";
+import { db, auth } from "./config/firebase";
+import { getDocs, collection } from "firebase/firestore";
 
 const App = () => {
+    console.log("Render App.");
     const [movieList, setMovieList] = useState([]);
-
-    const [newMovieTitle, setNewMovieTitle] = useState("");
-    const [newReleaseDate, setNewReleaseDate] = useState(0);
-    const [newMovieOscar, setNewMovieOscar] = useState(false);
 
     const movieColl = collection(db, "movies");
 
     useEffect(() => {
+        console.log("getMovieList");
         const getMovieList = async () => {
             try {
                 const data = await getDocs(movieColl);
@@ -28,43 +27,14 @@ const App = () => {
         };
 
         getMovieList();
-    }, [movieColl]);
-
-    const submitNewMovie = async () => {
-        try {
-            await addDoc(movieColl, {
-                title: newMovieTitle,
-                releaseDate: newReleaseDate,
-                receivedAnOscar: newMovieOscar,
-            });
-        } catch (err) {
-            console.error(err);
-        }
-    };
+    }, []);
 
     return (
         <div>
+            <h1>{auth?.currentUser?.email}</h1>
             <Auth />
+            <MovieForm movieColl={movieColl} />
 
-            <div>
-                <input
-                    type="text"
-                    placeholder="Movie title..."
-                    onChange={(e) => setNewMovieTitle(e.target.value)}
-                />
-                <input
-                    type="number"
-                    placeholder="Release date..."
-                    onChange={(e) => setNewReleaseDate(Number(e.target.value))}
-                />
-                <input
-                    id="oscar"
-                    type="checkbox"
-                    onChange={(e) => setNewMovieOscar(e.target.checked)}
-                />
-                <label htmlFor="oscar">Received an Oscar</label>
-                <input type="submit" onClick={submitNewMovie} />
-            </div>
             <div>
                 {movieList.map((movie) => (
                     <Movie
