@@ -7,11 +7,13 @@ export const Movie = ({ db, id, title, receivedAnOscar, releaseDate }) => {
     const deleteMovie = async (id) => {
         const movieDoc = doc(db, "movies", id);
         await deleteDoc(movieDoc);
+        console.log("movie deleted");
     };
 
     const updateTitle = async (id) => {
         const movieDoc = doc(db, "movies", id);
         await updateDoc(movieDoc, { title: newTitle });
+        console.log("title updated");
     };
 
     return (
