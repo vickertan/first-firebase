@@ -1,6 +1,22 @@
+import { useState, useEffect } from "react";
 import { Movie } from "../components/Movie";
+import { onSnapshot } from "firebase/firestore";
 
-export const MovieList = ({ movieList, db }) => {
+export const MovieList = ({ movieColl, db }) => {
+    const [movieList, setMovieList] = useState([]);
+
+    useEffect(() => {
+        console.log("Get movie list");
+
+        onSnapshot(movieColl, (snapshot) => {
+            const data = snapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            setMovieList(data);
+        });
+    }, []);
+
     return (
         <div>
             {movieList.map((movie) => (
