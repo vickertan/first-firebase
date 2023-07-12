@@ -6,8 +6,6 @@ export const MovieList = ({ movieColl, db }) => {
     const [movieList, setMovieList] = useState([]);
 
     useEffect(() => {
-        console.log("Get movie list");
-
         onSnapshot(movieColl, (snapshot) => {
             const data = snapshot.docs.map((doc) => ({
                 ...doc.data(),
