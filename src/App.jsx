@@ -16,7 +16,6 @@ const App = () => {
         onAuthStateChanged(auth, (u) => {
             if (u) {
                 setUser(u);
-                console.log(u);
             } else {
                 setUser(null);
             }
