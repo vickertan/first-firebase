@@ -24,7 +24,7 @@ const App = () => {
 
     return (
         <div>
-            <h1>{user ? user.email : "no user logged in"}</h1>
+            <h1>{user ? user.email : "No user"}</h1>
             <Auth />
             <MovieForm movieColl={movieColl} />
             <MovieList movieColl={movieColl} db={db} />
