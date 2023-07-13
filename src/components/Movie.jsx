@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 
 export const Movie = ({ db, id, title, receivedAnOscar, releaseDate }) => {
+    console.log("Movie component rendered");
+
+    const newTitleRef = useRef(null);
     const [newTitle, setNewTitle] = useState("");
 
     const deleteMovie = async (id) => {
@@ -14,6 +17,7 @@ export const Movie = ({ db, id, title, receivedAnOscar, releaseDate }) => {
         const movieDoc = doc(db, "movies", id);
         await updateDoc(movieDoc, { title: newTitle });
         console.log("title updated");
+        newTitleRef.current.value = "";
     };
 
     return (
@@ -28,6 +32,7 @@ export const Movie = ({ db, id, title, receivedAnOscar, releaseDate }) => {
             <p>Date: {releaseDate}</p>
             <button onClick={() => deleteMovie(id)}>Delete</button>
             <input
+                ref={newTitleRef}
                 type="text"
                 placeholder="edit title..."
                 onChange={(e) => {
