@@ -2,6 +2,7 @@ import { useState } from "react";
 import { auth, googleProvider } from "../config/firebase";
 import {
     createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
     signInWithRedirect,
     signOut,
 } from "firebase/auth";
