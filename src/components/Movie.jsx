@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 
 export const Movie = ({ db, id, title, receivedAnOscar, releaseDate }) => {
-    console.log("Movie component rendered");
+    console.log(`${title} rendered`);
 
     const newTitleRef = useRef(null);
     const [newTitle, setNewTitle] = useState("");
